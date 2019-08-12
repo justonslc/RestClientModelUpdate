@@ -8,14 +8,14 @@ using System.Collections;
 using System.IO;
 
 namespace RestClientModel
-{
+{ 
     public class PersonPersistence
     {
         private MySql.Data.MySqlClient.MySqlConnection conn;
         public PersonPersistence()
         {
             string myConnectionString;
-            myConnectionString = "";
+            myConnectionString = "server=127.0.0.1;uid=root;pwd=Tomorrow111!;database=employeedb";
             try
             {
                 conn = new MySql.Data.MySqlClient.MySqlConnection();
