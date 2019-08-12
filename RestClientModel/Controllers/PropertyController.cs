@@ -8,7 +8,7 @@ using RestClientModel.Models;
 using System.Collections;
 
 namespace RestClientModel.Controllers
-{ 
+{
     public class PropertyController : ApiController
     {
         /// <summary>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 
 namespace RestClientModel.Models
-{ 
+{
     public class Vehicles
     {
         public long ID { get; set; }

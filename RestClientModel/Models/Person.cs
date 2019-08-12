@@ -5,7 +5,7 @@ using System.Web;
 
 namespace RestClientModel.Models
 {
-    public class Person 
+    public class Person
     {
         public long ID { get; set; }
         public String LastName { get; set; }

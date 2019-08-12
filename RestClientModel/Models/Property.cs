@@ -19,4 +19,4 @@ namespace RestClientModel.Models
         public String CellPhoneModel { get; set; }
         public Double CellPhoneNumber { get; set; }
     }
-} 
+}
