@@ -10,7 +10,7 @@ using System.Collections;
 namespace RestClientModel.Controllers
 {
     public class PersonController : ApiController
-    {   
+    {
         /// <summary>
         /// Get All Persons
         /// </summary>
@@ -19,7 +19,7 @@ namespace RestClientModel.Controllers
         public ArrayList Get()
         {
             PersonPersistence pp = new PersonPersistence();
-            return pp.getPersons(); 
+            return pp.getPersons();
         }
         /// <summary>
         /// Get a Specific Person by ID

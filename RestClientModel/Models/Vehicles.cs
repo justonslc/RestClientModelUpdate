@@ -14,6 +14,6 @@ namespace RestClientModel.Models
         public Double Price { get; set; }
         public Boolean Used { get; set; }
         public Boolean New { get; set; }
-        public String Color { get; set; } 
+        public String Color { get; set; }
     }
 }

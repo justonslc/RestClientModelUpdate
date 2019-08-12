@@ -8,14 +8,14 @@ using System.Collections;
 using System.IO;
 
 namespace RestClientModel
-{ 
+{
     public class PersonPersistence
     {
         private MySql.Data.MySqlClient.MySqlConnection conn;
         public PersonPersistence()
         {
             string myConnectionString;
-            myConnectionString = "";
+            myConnectionString = "server=127.0.0.1;uid=root;pwd=Tomorrow111!;database=employeedb";
             try
             {
                 conn = new MySql.Data.MySqlClient.MySqlConnection();
@@ -77,7 +77,7 @@ namespace RestClientModel
                 return null;
         }
 
-public bool deletePerson(long ID)
+        public bool deletePerson(long ID)
         {
             Person p = new Person();
             MySql.Data.MySqlClient.MySqlDataReader mySqlDataReader = null;
@@ -107,16 +107,16 @@ public bool deletePerson(long ID)
             {
                 mySqlDataReader.Close();
 
-                sqlString = "UPDATE tblPersonnel SET FirstName='"+ personToSave.FirstName + 
-                    "',LastName='"+ personToSave.LastName + 
-                    "',PayRate="+ personToSave.PayRate + 
-                    ", StartDate='"+ personToSave.StartDate.ToString("yyyy-MM-dd") + 
-                    "',EndDate='"+ personToSave.EndDate.ToString("yyyy-MM-dd") + 
-                    "',Address='"+ personToSave.Address +
-                    "',State='" + personToSave.State + 
-                    "',ZipCode=" + personToSave.ZipCode + 
-                    ", PhoneNumber=" + personToSave.PhoneNumber +  
-                    "  WHERE ID = " + ID.ToString();           
+                sqlString = "UPDATE tblPersonnel SET FirstName='" + personToSave.FirstName +
+                    "',LastName='" + personToSave.LastName +
+                    "',PayRate=" + personToSave.PayRate +
+                    ", StartDate='" + personToSave.StartDate.ToString("yyyy-MM-dd") +
+                    "',EndDate='" + personToSave.EndDate.ToString("yyyy-MM-dd") +
+                    "',Address='" + personToSave.Address +
+                    "',State='" + personToSave.State +
+                    "',ZipCode=" + personToSave.ZipCode +
+                    ", PhoneNumber=" + personToSave.PhoneNumber +
+                    "  WHERE ID = " + ID.ToString();
                 cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
                 cmd.ExecuteNonQuery();
                 return true;
@@ -127,20 +127,20 @@ public bool deletePerson(long ID)
             }
         }
         public long savePerson(Person personToSave)
-            {
-                string sqlString = "INSERT INTO tblPersonnel (FirstName, LastName, PayRate, StartDate, EndDate, Address, State, ZipCode, PhoneNumber) VALUES ('" + personToSave.FirstName +
-                    "','" + personToSave.LastName +
-                    "','" + personToSave.PayRate +
-                    "','" + personToSave.StartDate.ToString("yyyy-MM-dd HH:mm:ss") +
-                    "','" + personToSave.EndDate.ToString("yyyy-MM-dd HH:mm:ss") +
-                    "','" + personToSave.Address +
-                    "','" + personToSave.State +
-                    "','" + personToSave.ZipCode +
-                    "','" + personToSave.PhoneNumber +"')";
-                MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
-                cmd.ExecuteNonQuery();
-                long id = cmd.LastInsertedId;
-                return id;
-            }
+        {
+            string sqlString = "INSERT INTO tblPersonnel (FirstName, LastName, PayRate, StartDate, EndDate, Address, State, ZipCode, PhoneNumber) VALUES ('" + personToSave.FirstName +
+                "','" + personToSave.LastName +
+                "','" + personToSave.PayRate +
+                "','" + personToSave.StartDate.ToString("yyyy-MM-dd HH:mm:ss") +
+                "','" + personToSave.EndDate.ToString("yyyy-MM-dd HH:mm:ss") +
+                "','" + personToSave.Address +
+                "','" + personToSave.State +
+                "','" + personToSave.ZipCode +
+                "','" + personToSave.PhoneNumber + "')";
+            MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+            cmd.ExecuteNonQuery();
+            long id = cmd.LastInsertedId;
+            return id;
         }
     }
+}

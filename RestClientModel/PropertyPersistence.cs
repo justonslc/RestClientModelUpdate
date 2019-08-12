@@ -7,14 +7,14 @@ using MySql.Data;
 using System.Collections;
 
 namespace RestClientModel
-{ 
+{
     public class PropertyPersistence
     {
         private MySql.Data.MySqlClient.MySqlConnection conn;
         public PropertyPersistence()
         {
             string myConnectionString;
-            myConnectionString = "";
+            myConnectionString = "server=127.0.0.1;uid=root;pwd=Tomorrow111!;database=employeedb";
             try
             {
                 conn = new MySql.Data.MySqlClient.MySqlConnection();
@@ -35,8 +35,8 @@ namespace RestClientModel
             MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
             mySqlDataReader = cmd.ExecuteReader();
             while (mySqlDataReader.Read())
-            { 
-        Property p = new Property();
+            {
+                Property p = new Property();
                 p.ID = mySqlDataReader.GetInt32(0);
                 p.ComputerMake = mySqlDataReader.GetString(1);
                 p.ComputeModel = mySqlDataReader.GetString(2);
@@ -138,7 +138,7 @@ namespace RestClientModel
                 "','" + propertyToSave.HardDrive +
                 "','" + propertyToSave.CellPhoneMake +
                 "','" + propertyToSave.CellPhoneModel +
-                "','" + propertyToSave.CellPhoneNumber +"')";
+                "','" + propertyToSave.CellPhoneNumber + "')";
             MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
             cmd.ExecuteNonQuery();
             long id = cmd.LastInsertedId;

@@ -7,7 +7,7 @@ using System.Web.Http;
 using RestClientModel.Models;
 using System.Collections;
 
-namespace RestClientModel.Controllers 
+namespace RestClientModel.Controllers
 {
     public class VehicleController : ApiController
     {
@@ -26,7 +26,7 @@ namespace RestClientModel.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        
+
 
         // GET: api/Vehicle/5
         public Vehicles Get(int id)
@@ -34,7 +34,7 @@ namespace RestClientModel.Controllers
             VehiclePersistence vp = new VehiclePersistence();
 
             Vehicles vehicle = vp.getVehicle(id);
-            return vehicle ;
+            return vehicle;
         }
 
         // POST: api/Vehicle
@@ -94,6 +94,6 @@ namespace RestClientModel.Controllers
                 response = Request.CreateResponse(HttpStatusCode.NotFound);
             }
             return response;
-        }   
+        }
     }
 }
