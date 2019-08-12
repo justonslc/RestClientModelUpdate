@@ -14,7 +14,7 @@ namespace RestClientModel.Models
         public DateTime IssueDate { get; set; }
         public String SerialNumber { get; set; }
         public Int16 Ram { get; set; }
-        public String HardDrive { get; set; }
+        public Int16 HardDrive { get; set; }
         public String CellPhoneMake { get; set; }
         public String CellPhoneModel { get; set; }
         public Double CellPhoneNumber { get; set; }

@@ -15,7 +15,7 @@ namespace RestClientModel
         public PersonPersistence()
         {
             string myConnectionString;
-            myConnectionString = "server=127.0.0.1;uid=root;pwd=Tomorrow111!;database=employeedb";
+            myConnectionString = "";
             try
             {
                 conn = new MySql.Data.MySqlClient.MySqlConnection();

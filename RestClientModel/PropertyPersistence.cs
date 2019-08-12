@@ -14,7 +14,7 @@ namespace RestClientModel
         public PropertyPersistence()
         {
             string myConnectionString;
-            myConnectionString = "server=127.0.0.1;uid=root;pwd=Tomorrow111!;database=employeedb";
+            myConnectionString = "";
             try
             {
                 conn = new MySql.Data.MySqlClient.MySqlConnection();
@@ -44,7 +44,7 @@ namespace RestClientModel
                 p.IssueDate = mySqlDataReader.GetDateTime(4);
                 p.SerialNumber = mySqlDataReader.GetString(5);
                 p.Ram = mySqlDataReader.GetInt16(6);
-                p.HardDrive = mySqlDataReader.GetString(7);
+                p.HardDrive = mySqlDataReader.GetInt16(7);
                 p.CellPhoneMake = mySqlDataReader.GetString(8);
                 p.CellPhoneModel = mySqlDataReader.GetString(9);
                 p.CellPhoneNumber = mySqlDataReader.GetDouble(10);
@@ -68,7 +68,7 @@ namespace RestClientModel
                 p.IssueDate = mySqlDataReader.GetDateTime(4);
                 p.SerialNumber = mySqlDataReader.GetString(5);
                 p.Ram = mySqlDataReader.GetInt16(6);
-                p.HardDrive = mySqlDataReader.GetString(7);
+                p.HardDrive = mySqlDataReader.GetInt16(7);
                 p.CellPhoneMake = mySqlDataReader.GetString(8);
                 p.CellPhoneModel = mySqlDataReader.GetString(9);
                 p.CellPhoneNumber = mySqlDataReader.GetDouble(10);
