@@ -97,30 +97,35 @@ namespace RestClientModel
                 return false;
             }
         }
-        public Property updateProperty(long ID)
+        public bool updateProperty(long ID, Property propertyToSave)
         {
-            Property p = new Property();
             MySql.Data.MySqlClient.MySqlDataReader mySqlDataReader = null;
-            String sqlString = "PUT * FROM tblproperty WHERE ID = " + ID.ToString();
+            String sqlString = "PUT  * FROM tblproperty WHERE ID = " + ID.ToString();
             MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
             mySqlDataReader = cmd.ExecuteReader();
             if (mySqlDataReader.Read())
             {
-                p.ID = mySqlDataReader.GetInt32(0);
-                p.ComputerMake = mySqlDataReader.GetString(1);
-                p.ComputeModel = mySqlDataReader.GetString(2);
-                p.Processor = mySqlDataReader.GetString(3);
-                p.IssueDate = mySqlDataReader.GetDateTime(4);
-                p.SerialNumber = mySqlDataReader.GetString(5);
-                p.Ram = mySqlDataReader.GetInt16(6);
-                p.HardDrive = mySqlDataReader.GetString(7);
-                p.CellPhoneMake = mySqlDataReader.GetString(8);
-                p.CellPhoneModel = mySqlDataReader.GetString(9);
-                p.CellPhoneNumber = mySqlDataReader.GetDouble(10);
-                return p;
+                mySqlDataReader.Close();
+
+                sqlString = "UPDATE tblProperty SET ComputerMake='" + propertyToSave.ComputerMake +
+                    "',ComputerModel='" + propertyToSave.ComputeModel +
+                    "',Processor=" + propertyToSave.Processor +
+                    ", IssueDate='" + propertyToSave.IssueDate.ToString("yyyy-MM-dd") +
+                    "',SerialNumber='" + propertyToSave.SerialNumber +
+                    "',Ram='" + propertyToSave.Ram +
+                    "',HardDrive=" + propertyToSave.HardDrive +
+                    "',CellPhoneMake=" + propertyToSave.CellPhoneMake +
+                    "',CellPhoneModel=" + propertyToSave.CellPhoneModel +
+                    ",CellPhoneNumber=" + propertyToSave.CellPhoneNumber +
+                    "  WHERE ID = " + ID.ToString();
+                cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+                cmd.ExecuteNonQuery();
+                return true;
             }
             else
-                return null;
+            {
+                return false;
+            }
         }
         public long saveProperty(Property propertyToSave)
         {

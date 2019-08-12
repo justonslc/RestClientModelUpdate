@@ -100,7 +100,7 @@ public bool deletePerson(long ID)
         public bool updatePerson(long ID, Person personToSave)
         {
             MySql.Data.MySqlClient.MySqlDataReader mySqlDataReader = null;
-            String sqlString = "SELECT  * FROM tblpersonnel WHERE ID = " + ID.ToString();
+            String sqlString = "PUT  * FROM tblpersonnel WHERE ID = " + ID.ToString();
             MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
             mySqlDataReader = cmd.ExecuteReader();
             if (mySqlDataReader.Read())

@@ -11,12 +11,21 @@ namespace RestClientModel.Controllers
 {
     public class PropertyController : ApiController
     {
+        /// <summary>
+        /// Get all Property
+        /// </summary>
+        /// <returns></returns>
         // GET: api/Property
         public ArrayList Get()
         {
             PropertyPersistence pp = new PropertyPersistence();
             return pp.getProperty();
         }
+        /// <summary>
+        /// Get a specific property by ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
 
         // GET: api/Property/5
         public Property Get(int id)
@@ -38,10 +47,29 @@ namespace RestClientModel.Controllers
             response.Headers.Location = new Uri(Request.RequestUri, String.Format("property/{0}", id));
             return response;
         }
+        /// <summary>
+        /// Add property
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="value"></param>
 
         // PUT: api/Property/5
-        public void Put(int id, [FromBody]string value)
+        public HttpResponseMessage Put(long id, [FromBody]Property value)
         {
+            PropertyPersistence pp = new PropertyPersistence();
+            bool recordExisted = false;
+            recordExisted = pp.updateProperty(id, value);
+            HttpResponseMessage response;
+
+            if (recordExisted)
+            {
+                response = Request.CreateResponse(HttpStatusCode.NoContent);
+            }
+            else
+            {
+                response = Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+            return response;
         }
 
         // DELETE: api/Property/5
