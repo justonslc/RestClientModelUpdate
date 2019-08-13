@@ -19,7 +19,7 @@ namespace RestClientModel.Controllers
         public ArrayList Get()
         {
             PropertyPersistence pp = new PropertyPersistence();
-            return pp.getProperty();
+            return pp.GetProperty();
         }
         /// <summary>
         /// Get a specific property by ID
@@ -32,7 +32,7 @@ namespace RestClientModel.Controllers
         {
             PropertyPersistence pp = new PropertyPersistence();
 
-            Property property = pp.getProperty(id);
+            Property property = pp.GetProperty(id);
             return property;
         }
 
@@ -41,7 +41,7 @@ namespace RestClientModel.Controllers
         {
             PropertyPersistence pp = new PropertyPersistence();
             long id;
-            id = pp.saveProperty(value);
+            id = pp.SaveProperty(value);
             value.ID = id;
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
             response.Headers.Location = new Uri(Request.RequestUri, String.Format("property/{0}", id));
@@ -58,7 +58,7 @@ namespace RestClientModel.Controllers
         {
             PropertyPersistence pp = new PropertyPersistence();
             bool recordExisted = false;
-            recordExisted = pp.updateProperty(id, value);
+            recordExisted = pp.UpdateProperty(id, value);
             HttpResponseMessage response;
 
             if (recordExisted)
@@ -77,7 +77,7 @@ namespace RestClientModel.Controllers
         {
             PropertyPersistence pp = new PropertyPersistence();
             bool recordExisted = false;
-            recordExisted = pp.deleteProperty(id);
+            recordExisted = pp.DeleteProperty(id);
             HttpResponseMessage response;
             if (recordExisted)
             {

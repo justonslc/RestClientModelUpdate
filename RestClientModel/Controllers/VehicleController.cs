@@ -19,7 +19,7 @@ namespace RestClientModel.Controllers
         public ArrayList Get()
         {
             VehiclePersistence vp = new VehiclePersistence();
-            return vp.getVehicle();
+            return vp.GetVehicle();
         }
         /// <summary>
         /// Get a specific vehicle by ID
@@ -33,7 +33,7 @@ namespace RestClientModel.Controllers
         {
             VehiclePersistence vp = new VehiclePersistence();
 
-            Vehicles vehicle = vp.getVehicle(id);
+            Vehicles vehicle = vp.GetVehicle(id);
             return vehicle;
         }
 
@@ -42,7 +42,7 @@ namespace RestClientModel.Controllers
         {
             VehiclePersistence vp = new VehiclePersistence();
             long id;
-            id = vp.saveVehicle(value);
+            id = vp.SaveVehicle(value);
             value.ID = id;
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
             response.Headers.Location = new Uri(Request.RequestUri, String.Format("vehicle/{0}", id));
@@ -59,7 +59,7 @@ namespace RestClientModel.Controllers
         {
             VehiclePersistence vp = new VehiclePersistence();
             bool recordExisted = false;
-            recordExisted = vp.updateVehicle(id, value);
+            recordExisted = vp.UpdateVehicle(id, value);
             HttpResponseMessage response;
 
             if (recordExisted)
@@ -83,7 +83,7 @@ namespace RestClientModel.Controllers
         {
             VehiclePersistence vp = new VehiclePersistence();
             bool recordExisted = false;
-            recordExisted = vp.deleteVehicle(id);
+            recordExisted = vp.DeleteVehicle(id);
             HttpResponseMessage response;
             if (recordExisted)
             {

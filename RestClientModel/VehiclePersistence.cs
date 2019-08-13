@@ -10,127 +10,189 @@ namespace RestClientModel
 {
     public class VehiclePersistence
     {
+        Connections connections = new Connections();
         private MySql.Data.MySqlClient.MySqlConnection conn;
-        public VehiclePersistence()
+        public ArrayList GetVehicle()
         {
-            string myConnectionString;
-            myConnectionString = "server=127.0.0.1;uid=root;pwd=Tomorrow111!;database=employeedb";
+            MySql.Data.MySqlClient.MySqlConnection conn;
+            conn = new MySql.Data.MySqlClient.MySqlConnection();
             try
             {
-                conn = new MySql.Data.MySqlClient.MySqlConnection();
-                conn.ConnectionString = myConnectionString;
+                conn.ConnectionString = connections.myConnectionString;
                 conn.Open();
+                ArrayList vehicleArray = new ArrayList();
+
+                MySql.Data.MySqlClient.MySqlDataReader mySqlDataReader = null;
+                String sqlString = "SELECT * FROM tblvehicle";
+                MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+                mySqlDataReader = cmd.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    Vehicles v = new Vehicles();
+                    v.ID = mySqlDataReader.GetInt32(0);
+                    v.Make = mySqlDataReader.GetString(1);
+                    v.Model = mySqlDataReader.GetString(2);
+                    v.Price = mySqlDataReader.GetDouble(3);
+                    v.Year = mySqlDataReader.GetDouble(4);
+                    v.Used = mySqlDataReader.GetBoolean(5);
+                    v.New = mySqlDataReader.GetBoolean(6);
+                    v.Color = mySqlDataReader.GetString(7);
+                    vehicleArray.Add(v);
+                }
+                return vehicleArray;
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
             }
         }
-        public ArrayList getVehicle()
+        public Vehicles GetVehicle(long ID)
         {
-            ArrayList vehicleArray = new ArrayList();
-
-            MySql.Data.MySqlClient.MySqlDataReader mySqlDataReader = null;
-            String sqlString = "SELECT * FROM tblvehicle";
-            MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
-            mySqlDataReader = cmd.ExecuteReader();
-            while (mySqlDataReader.Read())
+            MySql.Data.MySqlClient.MySqlConnection conn;
+            conn = new MySql.Data.MySqlClient.MySqlConnection();
+            try
             {
+                conn.ConnectionString = connections.myConnectionString;
+                conn.Open();
                 Vehicles v = new Vehicles();
-                v.ID = mySqlDataReader.GetInt32(0);
-                v.Make = mySqlDataReader.GetString(1);
-                v.Model = mySqlDataReader.GetString(2);
-                v.Price = mySqlDataReader.GetDouble(3);
-                v.Year = mySqlDataReader.GetDouble(4);
-                v.Used = mySqlDataReader.GetBoolean(5);
-                v.New = mySqlDataReader.GetBoolean(6);
-                v.Color = mySqlDataReader.GetString(7);
-                vehicleArray.Add(v);
+                MySql.Data.MySqlClient.MySqlDataReader mySqlDataReader = null;
+                String sqlString = "SELECT * FROM tblvehicle WHERE ID = " + ID.ToString();
+                MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+                mySqlDataReader = cmd.ExecuteReader();
+                if (mySqlDataReader.Read())
+                {
+                    v.ID = mySqlDataReader.GetInt32(0);
+                    v.Make = mySqlDataReader.GetString(1);
+                    v.Model = mySqlDataReader.GetString(2);
+                    v.Price = mySqlDataReader.GetDouble(3);
+                    v.Year = mySqlDataReader.GetDouble(4);
+                    v.Used = mySqlDataReader.GetBoolean(5);
+                    v.New = mySqlDataReader.GetBoolean(6);
+                    v.Color = mySqlDataReader.GetString(7);
+                    return v;
+                }
+                else
+                    return null;
             }
-            return vehicleArray;
-        }
-        public Vehicles getVehicle(long ID)
-        {
-            Vehicles v = new Vehicles();
-            MySql.Data.MySqlClient.MySqlDataReader mySqlDataReader = null;
-            String sqlString = "SELECT * FROM tblvehicle WHERE ID = " + ID.ToString();
-            MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
-            mySqlDataReader = cmd.ExecuteReader();
-            if (mySqlDataReader.Read())
+            catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                v.ID = mySqlDataReader.GetInt32(0);
-                v.Make = mySqlDataReader.GetString(1);
-                v.Model = mySqlDataReader.GetString(2);
-                v.Price = mySqlDataReader.GetDouble(3);
-                v.Year = mySqlDataReader.GetDouble(4);
-                v.Used = mySqlDataReader.GetBoolean(5);
-                v.New = mySqlDataReader.GetBoolean(6);
-                v.Color = mySqlDataReader.GetString(7);
-                return v;
+                throw ex;
             }
-            else
-                return null;
-        }
-        public bool deleteVehicle(long ID)
-        {
-            Person p = new Person();
-            MySql.Data.MySqlClient.MySqlDataReader mySqlDataReader = null;
-            String sqlString = "DELETE FROM tblvehicle WHERE ID = " + ID.ToString();
-            MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
-            mySqlDataReader = cmd.ExecuteReader();
-            if (mySqlDataReader.Read())
+            finally
             {
-                mySqlDataReader.Close();
-                sqlString = "DELETE FROM tblvehicle WHERE ID = " + ID.ToString();
-                cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
-                cmd.ExecuteNonQuery();
-                return true;
-            }
-            else
-            {
-                return false;
+                conn.Close();
             }
         }
-        public bool updateVehicle(long ID, Vehicles vehicleToSave)
+        public bool DeleteVehicle(long ID)
         {
-            MySql.Data.MySqlClient.MySqlDataReader mySqlDataReader = null;
-            String sqlString = "PUT  * FROM tblvehicle WHERE ID = " + ID.ToString();
-            MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
-            mySqlDataReader = cmd.ExecuteReader();
-            if (mySqlDataReader.Read())
+            MySql.Data.MySqlClient.MySqlConnection conn;
+            conn = new MySql.Data.MySqlClient.MySqlConnection();
+            try
             {
-                mySqlDataReader.Close();
+                conn.ConnectionString = connections.myConnectionString;
+                conn.Open();
+                Person p = new Person();
+                MySql.Data.MySqlClient.MySqlDataReader mySqlDataReader = null;
+                String sqlString = "DELETE FROM tblvehicle WHERE ID = " + ID.ToString();
+                MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+                mySqlDataReader = cmd.ExecuteReader();
+                if (mySqlDataReader.Read())
+                {
+                    mySqlDataReader.Close();
+                    sqlString = "DELETE FROM tblvehicle WHERE ID = " + ID.ToString();
+                    cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+                    cmd.ExecuteNonQuery();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (MySql.Data.MySqlClient.MySqlException ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+        public bool UpdateVehicle(long ID, Vehicles vehicleToSave)
+        {
+            MySql.Data.MySqlClient.MySqlConnection conn;
+            conn = new MySql.Data.MySqlClient.MySqlConnection();
+            try
+            {
+                conn.ConnectionString = connections.myConnectionString;
+                conn.Open();
+                MySql.Data.MySqlClient.MySqlDataReader mySqlDataReader = null;
+                String sqlString = "PUT  * FROM tblvehicle WHERE ID = " + ID.ToString();
+                MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+                mySqlDataReader = cmd.ExecuteReader();
+                if (mySqlDataReader.Read())
+                {
+                    mySqlDataReader.Close();
 
-                sqlString = "UPDATE tblvehicle SET Make='" + vehicleToSave.Make +
-                    "',Model='" + vehicleToSave.Model +
-                    "',Year=" + vehicleToSave.Year +
-                    ", Price='" + vehicleToSave.Price +
-                    "',Used='" + vehicleToSave.Used +
-                    "',New='" + vehicleToSave.New +
-                    "',Color=" + vehicleToSave.Color +
-                    "  WHERE ID = " + ID.ToString();
-                cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
-                cmd.ExecuteNonQuery();
-                return true;
+                    sqlString = "UPDATE tblvehicle SET Make='" + vehicleToSave.Make +
+                        "',Model='" + vehicleToSave.Model +
+                        "',Year=" + vehicleToSave.Year +
+                        ", Price='" + vehicleToSave.Price +
+                        "',Used='" + vehicleToSave.Used +
+                        "',New='" + vehicleToSave.New +
+                        "',Color=" + vehicleToSave.Color +
+                        "  WHERE ID = " + ID.ToString();
+                    cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+                    cmd.ExecuteNonQuery();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
+            catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                return false;
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
             }
         }
-        public long saveVehicle(Vehicles vehicleToSave)
+        public long SaveVehicle(Vehicles vehicleToSave)
         {
-            string sqlString = "INSERT INTO tblvehicle (Make, Model, Year, Price, Used, New, Color) VALUES ('" + vehicleToSave.Make +
-                "','" + vehicleToSave.Model +
-                "','" + vehicleToSave.Year +
-                "','" + vehicleToSave.Price +
-                "','" + vehicleToSave.Used +
-                "','" + vehicleToSave.New +
-                "','" + vehicleToSave.Color + "')";
-            MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
-            cmd.ExecuteNonQuery();
-            long id = cmd.LastInsertedId;
-            return id;
+            MySql.Data.MySqlClient.MySqlConnection conn;
+            conn = new MySql.Data.MySqlClient.MySqlConnection();
+            try
+            {
+                conn.ConnectionString = connections.myConnectionString;
+                conn.Open();
+                string sqlString = "INSERT INTO tblvehicle (Make, Model, Year, Price, Used, New, Color) VALUES ('" + vehicleToSave.Make +
+                        "','" + vehicleToSave.Model +
+                        "','" + vehicleToSave.Year +
+                        "','" + vehicleToSave.Price +
+                        "','" + vehicleToSave.Used +
+                        "','" + vehicleToSave.New +
+                        "','" + vehicleToSave.Color + "')";
+                MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+                cmd.ExecuteNonQuery();
+                long id = cmd.LastInsertedId;
+                return id;
+            }
+            catch (MySql.Data.MySqlClient.MySqlException ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
     }
 }
+

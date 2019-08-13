@@ -19,7 +19,7 @@ namespace RestClientModel.Controllers
         public ArrayList Get()
         {
             PersonPersistence pp = new PersonPersistence();
-            return pp.getPersons();
+            return pp.GetPersons();
         }
         /// <summary>
         /// Get a Specific Person by ID
@@ -28,11 +28,15 @@ namespace RestClientModel.Controllers
         /// <returns></returns>
 
         // GET: api/Person/5
-        public Person Get(int id)
+        public Person Get(long id)
         {
             PersonPersistence pp = new PersonPersistence();
 
-            Person person = pp.getPerson(id);
+            Person person = pp.GetPerson(id);
+            if(person == null)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound));
+            }
             return person;
         }
 
@@ -41,7 +45,7 @@ namespace RestClientModel.Controllers
         {
             PersonPersistence pp = new PersonPersistence();
             long id;
-            id = pp.savePerson(value);
+            id = pp.SavePerson(value);
             value.ID = id;
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
             response.Headers.Location = new Uri(Request.RequestUri, String.Format("person/{0}", id));
@@ -59,7 +63,7 @@ namespace RestClientModel.Controllers
         {
             PersonPersistence pp = new PersonPersistence();
             bool recordExisted = false;
-            recordExisted = pp.updatePerson(id, value);
+            recordExisted = pp.UpdatePerson(id, value);
             HttpResponseMessage response;
 
             if (recordExisted)
@@ -83,7 +87,7 @@ namespace RestClientModel.Controllers
         {
             PersonPersistence pp = new PersonPersistence();
             bool recordExisted = false;
-            recordExisted = pp.deletePerson(id);
+            recordExisted = pp.DeletePerson(id);
             HttpResponseMessage response;
             if (recordExisted)
             {

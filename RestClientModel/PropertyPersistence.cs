@@ -10,139 +10,205 @@ namespace RestClientModel
 {
     public class PropertyPersistence
     {
+        Connections connections = new Connections();
         private MySql.Data.MySqlClient.MySqlConnection conn;
-        public PropertyPersistence()
+        public ArrayList GetProperty()
         {
-            string myConnectionString;
-            myConnectionString = "server=127.0.0.1;uid=root;pwd=Tomorrow111!;database=employeedb";
+            MySql.Data.MySqlClient.MySqlConnection conn;
+            conn = new MySql.Data.MySqlClient.MySqlConnection();
             try
             {
-                conn = new MySql.Data.MySqlClient.MySqlConnection();
-                conn.ConnectionString = myConnectionString;
+                conn.ConnectionString = connections.myConnectionString;
                 conn.Open();
+                ArrayList propertyArray = new ArrayList();
+
+                MySql.Data.MySqlClient.MySqlDataReader mySqlDataReader = null;
+                String sqlString = "SELECT * FROM tblproperty";
+                MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+                mySqlDataReader = cmd.ExecuteReader();
+                while (mySqlDataReader.Read())
+                {
+                    Property p = new Property();
+                    p.ID = mySqlDataReader.GetInt32(0);
+                    p.ComputerMake = mySqlDataReader.GetString(1);
+                    p.ComputeModel = mySqlDataReader.GetString(2);
+                    p.Processor = mySqlDataReader.GetString(3);
+                    p.IssueDate = mySqlDataReader.GetDateTime(4);
+                    p.SerialNumber = mySqlDataReader.GetString(5);
+                    p.Ram = mySqlDataReader.GetInt16(6);
+                    p.HardDrive = mySqlDataReader.GetInt16(7);
+                    p.CellPhoneMake = mySqlDataReader.GetString(8);
+                    p.CellPhoneModel = mySqlDataReader.GetString(9);
+                    p.CellPhoneNumber = mySqlDataReader.GetDouble(10);
+                    propertyArray.Add(p);
+                }
+                return propertyArray;
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
             }
         }
-        public ArrayList getProperty()
+        public Property GetProperty(long ID)
         {
-            ArrayList propertyArray = new ArrayList();
-
-            MySql.Data.MySqlClient.MySqlDataReader mySqlDataReader = null;
-            String sqlString = "SELECT * FROM tblproperty";
-            MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
-            mySqlDataReader = cmd.ExecuteReader();
-            while (mySqlDataReader.Read())
+            MySql.Data.MySqlClient.MySqlConnection conn;
+            conn = new MySql.Data.MySqlClient.MySqlConnection();
+            try
             {
+                conn.ConnectionString = connections.myConnectionString;
+                conn.Open();
+                ArrayList propertyArray = new ArrayList();
                 Property p = new Property();
-                p.ID = mySqlDataReader.GetInt32(0);
-                p.ComputerMake = mySqlDataReader.GetString(1);
-                p.ComputeModel = mySqlDataReader.GetString(2);
-                p.Processor = mySqlDataReader.GetString(3);
-                p.IssueDate = mySqlDataReader.GetDateTime(4);
-                p.SerialNumber = mySqlDataReader.GetString(5);
-                p.Ram = mySqlDataReader.GetInt16(6);
-                p.HardDrive = mySqlDataReader.GetInt16(7);
-                p.CellPhoneMake = mySqlDataReader.GetString(8);
-                p.CellPhoneModel = mySqlDataReader.GetString(9);
-                p.CellPhoneNumber = mySqlDataReader.GetDouble(10);
-                propertyArray.Add(p);
+                MySql.Data.MySqlClient.MySqlDataReader mySqlDataReader = null;
+                String sqlString = "SELECT * FROM tblproperty WHERE ID = " + ID.ToString();
+                MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+                mySqlDataReader = cmd.ExecuteReader();
+                if (mySqlDataReader.Read())
+                {
+                    p.ID = mySqlDataReader.GetInt32(0);
+                    p.ComputerMake = mySqlDataReader.GetString(1);
+                    p.ComputeModel = mySqlDataReader.GetString(2);
+                    p.Processor = mySqlDataReader.GetString(3);
+                    p.IssueDate = mySqlDataReader.GetDateTime(4);
+                    p.SerialNumber = mySqlDataReader.GetString(5);
+                    p.Ram = mySqlDataReader.GetInt16(6);
+                    p.HardDrive = mySqlDataReader.GetInt16(7);
+                    p.CellPhoneMake = mySqlDataReader.GetString(8);
+                    p.CellPhoneModel = mySqlDataReader.GetString(9);
+                    p.CellPhoneNumber = mySqlDataReader.GetDouble(10);
+                    return p;
+                }
+                else
+                    return null;
             }
-            return propertyArray;
-        }
-        public Property getProperty(long ID)
-        {
-            Property p = new Property();
-            MySql.Data.MySqlClient.MySqlDataReader mySqlDataReader = null;
-            String sqlString = "SELECT * FROM tblproperty WHERE ID = " + ID.ToString();
-            MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
-            mySqlDataReader = cmd.ExecuteReader();
-            if (mySqlDataReader.Read())
+            catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                p.ID = mySqlDataReader.GetInt32(0);
-                p.ComputerMake = mySqlDataReader.GetString(1);
-                p.ComputeModel = mySqlDataReader.GetString(2);
-                p.Processor = mySqlDataReader.GetString(3);
-                p.IssueDate = mySqlDataReader.GetDateTime(4);
-                p.SerialNumber = mySqlDataReader.GetString(5);
-                p.Ram = mySqlDataReader.GetInt16(6);
-                p.HardDrive = mySqlDataReader.GetInt16(7);
-                p.CellPhoneMake = mySqlDataReader.GetString(8);
-                p.CellPhoneModel = mySqlDataReader.GetString(9);
-                p.CellPhoneNumber = mySqlDataReader.GetDouble(10);
-                return p;
+                throw ex;
             }
-            else
-                return null;
-        }
-        public bool deleteProperty(long ID)
-        {
-            Property p = new Property();
-            MySql.Data.MySqlClient.MySqlDataReader mySqlDataReader = null;
-            String sqlString = "DELETE FROM tblproperty WHERE ID = " + ID.ToString();
-            MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
-            mySqlDataReader = cmd.ExecuteReader();
-            if (mySqlDataReader.Read())
+            finally
             {
-                mySqlDataReader.Close();
-                sqlString = "DELETE FROM tblproperty WHERE ID = " + ID.ToString();
-                cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
-                cmd.ExecuteNonQuery();
-                return true;
-            }
-            else
-            {
-                return false;
+                conn.Close();
             }
         }
-        public bool updateProperty(long ID, Property propertyToSave)
+        public bool DeleteProperty(long ID)
         {
-            MySql.Data.MySqlClient.MySqlDataReader mySqlDataReader = null;
-            String sqlString = "PUT  * FROM tblproperty WHERE ID = " + ID.ToString();
-            MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
-            mySqlDataReader = cmd.ExecuteReader();
-            if (mySqlDataReader.Read())
+            MySql.Data.MySqlClient.MySqlConnection conn;
+            conn = new MySql.Data.MySqlClient.MySqlConnection();
+            try
             {
-                mySqlDataReader.Close();
+                conn.ConnectionString = connections.myConnectionString;
+                conn.Open();
+                ArrayList propertyArray = new ArrayList();
+                Property p = new Property();
+                MySql.Data.MySqlClient.MySqlDataReader mySqlDataReader = null;
+                String sqlString = "DELETE FROM tblproperty WHERE ID = " + ID.ToString();
+                MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+                mySqlDataReader = cmd.ExecuteReader();
+                if (mySqlDataReader.Read())
+                {
+                    mySqlDataReader.Close();
+                    sqlString = "DELETE FROM tblproperty WHERE ID = " + ID.ToString();
+                    cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+                    cmd.ExecuteNonQuery();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (MySql.Data.MySqlClient.MySqlException ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+        public bool UpdateProperty(long ID, Property propertyToSave)
+        {
+            MySql.Data.MySqlClient.MySqlConnection conn;
+            conn = new MySql.Data.MySqlClient.MySqlConnection();
+            try
+            {
+                conn.ConnectionString = connections.myConnectionString;
+                conn.Open();
+                ArrayList propertyArray = new ArrayList();
+                MySql.Data.MySqlClient.MySqlDataReader mySqlDataReader = null;
+                String sqlString = "PUT  * FROM tblproperty WHERE ID = " + ID.ToString();
+                MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+                mySqlDataReader = cmd.ExecuteReader();
+                if (mySqlDataReader.Read())
+                {
+                    mySqlDataReader.Close();
 
-                sqlString = "UPDATE tblProperty SET ComputerMake='" + propertyToSave.ComputerMake +
-                    "',ComputerModel='" + propertyToSave.ComputeModel +
-                    "',Processor=" + propertyToSave.Processor +
-                    ", IssueDate='" + propertyToSave.IssueDate.ToString("yyyy-MM-dd") +
-                    "',SerialNumber='" + propertyToSave.SerialNumber +
-                    "',Ram='" + propertyToSave.Ram +
-                    "',HardDrive=" + propertyToSave.HardDrive +
-                    "',CellPhoneMake=" + propertyToSave.CellPhoneMake +
-                    "',CellPhoneModel=" + propertyToSave.CellPhoneModel +
-                    ",CellPhoneNumber=" + propertyToSave.CellPhoneNumber +
-                    "  WHERE ID = " + ID.ToString();
-                cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
-                cmd.ExecuteNonQuery();
-                return true;
+                    sqlString = "UPDATE tblProperty SET ComputerMake='" + propertyToSave.ComputerMake +
+                        "',ComputerModel='" + propertyToSave.ComputeModel +
+                        "',Processor=" + propertyToSave.Processor +
+                        ", IssueDate='" + propertyToSave.IssueDate.ToString("yyyy-MM-dd") +
+                        "',SerialNumber='" + propertyToSave.SerialNumber +
+                        "',Ram='" + propertyToSave.Ram +
+                        "',HardDrive=" + propertyToSave.HardDrive +
+                        "',CellPhoneMake=" + propertyToSave.CellPhoneMake +
+                        "',CellPhoneModel=" + propertyToSave.CellPhoneModel +
+                        ",CellPhoneNumber=" + propertyToSave.CellPhoneNumber +
+                        "  WHERE ID = " + ID.ToString();
+                    cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+                    cmd.ExecuteNonQuery();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
+            catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                return false;
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
             }
         }
-        public long saveProperty(Property propertyToSave)
+        public long SaveProperty(Property propertyToSave)
         {
-            string sqlString = "INSERT INTO tblproperty (ComputerMake, ComputerModel, Processor, IssueDate, SerialNumber, Ram, HardDrive, CellPhoneMake, CellPhoneModel, CellPhoneNumber) VALUES ('" + propertyToSave.ComputerMake +
-                "','" + propertyToSave.ComputeModel +
-                "','" + propertyToSave.Processor +
-                "','" + propertyToSave.IssueDate.ToString("yyyy-MM-dd HH:mm:ss") +
-                "','" + propertyToSave.SerialNumber +
-                "','" + propertyToSave.Ram +
-                "','" + propertyToSave.HardDrive +
-                "','" + propertyToSave.CellPhoneMake +
-                "','" + propertyToSave.CellPhoneModel +
-                "','" + propertyToSave.CellPhoneNumber + "')";
-            MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
-            cmd.ExecuteNonQuery();
-            long id = cmd.LastInsertedId;
-            return id;
+            MySql.Data.MySqlClient.MySqlConnection conn;
+            conn = new MySql.Data.MySqlClient.MySqlConnection();
+            try
+            {
+                conn.ConnectionString = connections.myConnectionString;
+                conn.Open();
+                ArrayList propertyArray = new ArrayList();
+                string sqlString = "INSERT INTO tblproperty (ComputerMake, ComputerModel, Processor, IssueDate, SerialNumber, Ram, HardDrive, CellPhoneMake, CellPhoneModel, CellPhoneNumber) VALUES ('" + propertyToSave.ComputerMake +
+                    "','" + propertyToSave.ComputeModel +
+                    "','" + propertyToSave.Processor +
+                    "','" + propertyToSave.IssueDate.ToString("yyyy-MM-dd HH:mm:ss") +
+                    "','" + propertyToSave.SerialNumber +
+                    "','" + propertyToSave.Ram +
+                    "','" + propertyToSave.HardDrive +
+                    "','" + propertyToSave.CellPhoneMake +
+                    "','" + propertyToSave.CellPhoneModel +
+                    "','" + propertyToSave.CellPhoneNumber + "')";
+                MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sqlString, conn);
+                cmd.ExecuteNonQuery();
+                long id = cmd.LastInsertedId;
+                return id;
+            }
+            catch (MySql.Data.MySqlClient.MySqlException ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
+
     }
 }
