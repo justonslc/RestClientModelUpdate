@@ -34,8 +34,8 @@ namespace RestClientModel
                     v.Model = mySqlDataReader.GetString(2);
                     v.Price = mySqlDataReader.GetDouble(3);
                     v.Year = mySqlDataReader.GetDouble(4);
-                    v.Used = mySqlDataReader.GetBoolean(5);
-                    v.New = mySqlDataReader.GetBoolean(6);
+                    v.Used = mySqlDataReader.GetString(5);
+                    v.New = mySqlDataReader.GetString(6);
                     v.Color = mySqlDataReader.GetString(7);
                     vehicleArray.Add(v);
                 }
@@ -70,8 +70,8 @@ namespace RestClientModel
                     v.Model = mySqlDataReader.GetString(2);
                     v.Price = mySqlDataReader.GetDouble(3);
                     v.Year = mySqlDataReader.GetDouble(4);
-                    v.Used = mySqlDataReader.GetBoolean(5);
-                    v.New = mySqlDataReader.GetBoolean(6);
+                    v.Used = mySqlDataReader.GetString(5);
+                    v.New = mySqlDataReader.GetString(6);
                     v.Color = mySqlDataReader.GetString(7);
                     return v;
                 }

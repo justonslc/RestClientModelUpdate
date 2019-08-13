@@ -10,6 +10,7 @@ namespace RestClientModel
 {
     public class PropertyPersistence
     {
+
         Connections connections = new Connections();
         private MySql.Data.MySqlClient.MySqlConnection conn;
         public ArrayList GetProperty()
@@ -31,7 +32,7 @@ namespace RestClientModel
                     Property p = new Property();
                     p.ID = mySqlDataReader.GetInt32(0);
                     p.ComputerMake = mySqlDataReader.GetString(1);
-                    p.ComputeModel = mySqlDataReader.GetString(2);
+                    p.ComputerModel = mySqlDataReader.GetString(2);
                     p.Processor = mySqlDataReader.GetString(3);
                     p.IssueDate = mySqlDataReader.GetDateTime(4);
                     p.SerialNumber = mySqlDataReader.GetString(5);
@@ -40,6 +41,7 @@ namespace RestClientModel
                     p.CellPhoneMake = mySqlDataReader.GetString(8);
                     p.CellPhoneModel = mySqlDataReader.GetString(9);
                     p.CellPhoneNumber = mySqlDataReader.GetDouble(10);
+
                     propertyArray.Add(p);
                 }
                 return propertyArray;
@@ -71,7 +73,7 @@ namespace RestClientModel
                 {
                     p.ID = mySqlDataReader.GetInt32(0);
                     p.ComputerMake = mySqlDataReader.GetString(1);
-                    p.ComputeModel = mySqlDataReader.GetString(2);
+                    p.ComputerModel = mySqlDataReader.GetString(2);
                     p.Processor = mySqlDataReader.GetString(3);
                     p.IssueDate = mySqlDataReader.GetDateTime(4);
                     p.SerialNumber = mySqlDataReader.GetString(5);
@@ -148,7 +150,7 @@ namespace RestClientModel
                     mySqlDataReader.Close();
 
                     sqlString = "UPDATE tblProperty SET ComputerMake='" + propertyToSave.ComputerMake +
-                        "',ComputerModel='" + propertyToSave.ComputeModel +
+                        "',ComputerModel='" + propertyToSave.ComputerModel +
                         "',Processor=" + propertyToSave.Processor +
                         ", IssueDate='" + propertyToSave.IssueDate.ToString("yyyy-MM-dd") +
                         "',SerialNumber='" + propertyToSave.SerialNumber +
@@ -186,7 +188,7 @@ namespace RestClientModel
                 conn.Open();
                 ArrayList propertyArray = new ArrayList();
                 string sqlString = "INSERT INTO tblproperty (ComputerMake, ComputerModel, Processor, IssueDate, SerialNumber, Ram, HardDrive, CellPhoneMake, CellPhoneModel, CellPhoneNumber) VALUES ('" + propertyToSave.ComputerMake +
-                    "','" + propertyToSave.ComputeModel +
+                    "','" + propertyToSave.ComputerModel +
                     "','" + propertyToSave.Processor +
                     "','" + propertyToSave.IssueDate.ToString("yyyy-MM-dd HH:mm:ss") +
                     "','" + propertyToSave.SerialNumber +
@@ -209,6 +211,5 @@ namespace RestClientModel
                 conn.Close();
             }
         }
-
     }
 }

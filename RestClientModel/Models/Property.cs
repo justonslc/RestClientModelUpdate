@@ -9,7 +9,7 @@ namespace RestClientModel.Models
     {
         public long ID { get; set; }
         public String ComputerMake { get; set; }
-        public String ComputeModel { get; set; }
+        public String ComputerModel { get; set; }
         public String Processor { get; set; }
         public DateTime IssueDate { get; set; }
         public String SerialNumber { get; set; }
